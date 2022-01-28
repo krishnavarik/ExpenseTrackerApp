@@ -1,0 +1,17 @@
+.head {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid brown;
+}
+
+.head p {
+  font-size: 15px;
+  font-family:'Arial Narrow Bold', sans-serif;
+}
+
+.head h2 {
+  font-size: 18px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
