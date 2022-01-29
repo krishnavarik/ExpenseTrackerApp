@@ -27,7 +27,6 @@ function ExpenseItems() {
       price: price,
       description: description,
       title: title,
-      id: Math.random(),
     };
 
     fetch(
@@ -57,11 +56,17 @@ function ExpenseItems() {
       .then((data) => {
         setExpense([Expense, ...expense]);
       });
+
+    // setTitle('')
+    // setPrice('')
+    // setDescription('')
   };
 
   useEffect(() => {
     fetch(
-      "https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses.json"
+      "https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses.json",{
+        method:"GET"
+      }
     )
       .then((res) => {
         if (res.ok) {
@@ -87,6 +92,62 @@ function ExpenseItems() {
         setExpense(storedItems);
       });
   }, []);
+
+  const deleteHandler = (id) => {
+    console.log(id);
+
+    const updated = expense.filter((item) => {
+      return item.id !== id;
+    });
+
+    setExpense(updated);
+
+    fetch(
+      `https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses/${id}.json`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      if (res.ok) {
+        alert("item deleted");
+        return res.json();
+      } else {
+        return res.json().then((data) => {
+          console.log(data);
+        });
+      }
+    });
+  };
+
+  const editHandler = (id) => {
+    console.log(id.description);
+    fetch(
+      `https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses/${id}.json`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          title: title,
+          price: price,
+          description: description,
+        }),
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            alert(data.error);
+          });
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  };
 
   return (
     <div>
@@ -136,6 +197,22 @@ function ExpenseItems() {
                 </div>
                 <div className="span">
                   <span>{item.price}</span>
+                </div>
+                <div>
+                  <button
+                    onClick={() => {
+                      deleteHandler(item.id);
+                    }}
+                  >
+                    delete
+                  </button>
+                  <button
+                    onClick={() => {
+                      editHandler(item.id);
+                    }}
+                  >
+                    Edit
+                  </button>
                 </div>
               </li>
             );
