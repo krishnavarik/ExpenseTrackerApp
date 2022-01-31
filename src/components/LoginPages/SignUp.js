@@ -1,15 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SignUp.css";
-import { AuthContext } from "../Store/auth-context";
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
 
   const navigate = useNavigate();
-
-  const authCtx = useContext(AuthContext);
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -57,7 +55,7 @@ const SignUp = () => {
         .then((data) => {
           // console.log(data);
           // console.log(data.idToken);
-          authCtx.login(data.idToken);
+          localStorage.setItem("idToken", data.idToken);
           navigate("/login");
         })
         .catch((err) => {

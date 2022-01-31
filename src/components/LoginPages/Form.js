@@ -1,21 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./Form.css";
-import { AuthContext } from "../Store/auth-context";
+
 import { useNavigate } from "react-router";
 
 function Form() {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
 
-  const [id, setId] = useState("");
-  console.log(id);
-
   const navigate = useNavigate();
-
-  const AuthCtx = useContext(AuthContext);
-  console.log(AuthCtx.token);
-
-  const token = AuthCtx.token;
 
   const nameHandler = (event) => {
     setName(event.target.value);
@@ -24,6 +16,9 @@ function Form() {
   const urlHandler = (event) => {
     setUrl(event.target.value);
   };
+
+  const token = localStorage.getItem("idToken");
+  console.log(token);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -49,7 +44,6 @@ function Form() {
         return res.json().then((data) => {
           console.log(data);
 
-          setId(data.localId);
           navigate("/");
         });
       } else {

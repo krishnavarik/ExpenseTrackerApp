@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./ExpenseItems.css";
+
+import { expenseActions } from "../store/expenseReducer";
+
 function ExpenseItems() {
+  const TotalExpense = useSelector((state) => state.expense.totalexpense);
+
   const [price, setPrice] = useState("");
 
   const [description, setDescription] = useState("");
@@ -12,6 +18,10 @@ function ExpenseItems() {
   const [edit, setEdit] = useState(false);
 
   const [editId, setEditId] = useState("");
+
+  const [premium, setPremium] = useState(false);
+
+  const dispatch = useDispatch();
 
   const priceHandler = (event) => {
     setPrice(event.target.value);
@@ -81,13 +91,23 @@ function ExpenseItems() {
         })
         .then((data) => {
           setExpense([Expense, ...expense]);
+          dispatch(expenseActions.addingExpense(Expense));
+          dispatch(expenseActions.totalExpense(Expense.price));
         });
     }
 
-    setTitle('')
-    setPrice('')
-    setDescription('')
+    setTitle("");
+    setPrice("");
+    setDescription("");
   };
+
+  useEffect(() => {
+    if (TotalExpense >= 10000) {
+      setPremium(true);
+    } else {
+      setPremium(false);
+    }
+  }, [TotalExpense]);
 
   useEffect(() => {
     fetch(
@@ -110,6 +130,7 @@ function ExpenseItems() {
       })
       .then((data) => {
         console.log(data);
+
         const storedItems = [];
 
         for (const key in data) {
@@ -119,10 +140,12 @@ function ExpenseItems() {
             description: data[key].description,
             price: data[key].price,
           });
+          dispatch(expenseActions.totalExpense(data[key].price));
         }
         setExpense(storedItems);
+        dispatch(expenseActions.expense(storedItems));
       });
-  }, []);
+  }, [dispatch]);
 
   const deleteHandler = (id) => {
     console.log(id);
@@ -189,6 +212,7 @@ function ExpenseItems() {
             type="number"
             onChange={priceHandler}
             value={price}
+            required
           />
         </div>
         <div className="inputs">
@@ -198,6 +222,7 @@ function ExpenseItems() {
             type="text"
             onChange={descriptionHandler}
             value={description}
+            required
           />
         </div>
         <div className="title">
@@ -249,6 +274,10 @@ function ExpenseItems() {
           })}
         </ul>
       </section>
+      {premium && <button className="premium">Active Premium</button>}
+      <div className="total">
+        <h2>Total Expense: ${TotalExpense} </h2>
+      </div>
     </div>
   );
 }

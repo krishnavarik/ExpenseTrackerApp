@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import "./Login.css";
-import { AuthContext } from "../Store/auth-context";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,8 +11,10 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const authCtx = useContext(AuthContext);
-  // console.log(authCtx);
+  const dispatch = useDispatch();
+
+  const idToken = useSelector((state) => state.idToken);
+  console.log(idToken);
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -58,9 +61,11 @@ const Login = () => {
         })
         .then((data) => {
           // console.log(data);
-          // console.log(data.idToken);
-          localStorage.setItem("idToken", data.idToken);
-          authCtx.login(data.idToken);
+          console.log(data.idToken);
+
+          dispatch({ type: "idtoken", token: data.idToken });
+          console.log(data.idToken)
+
           navigate("/complete");
         })
         .catch((err) => {
@@ -83,7 +88,8 @@ const Login = () => {
           <h1>Login</h1>
           <div>
             <label htmlFor="email">Email:</label>
-            <input className="login"
+            <input
+              className="login"
               type="email"
               required
               value={email}
@@ -92,7 +98,8 @@ const Login = () => {
           </div>
           <div>
             <label htmlFor="password">Password:</label>
-            <input className="login"
+            <input
+              className="login"
               type="password"
               value={password}
               onChange={passwordHandler}
@@ -100,7 +107,8 @@ const Login = () => {
           </div>
           <div>
             <label htmlFor="password">Confirm Password</label>
-            <input className="login"
+            <input
+              className="login"
               type="password"
               value={confirmPass}
               onChange={confirmPassHandler}

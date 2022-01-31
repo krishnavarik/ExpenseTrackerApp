@@ -70,3 +70,17 @@ span {
   font-size: 15px;
   font-weight: lighter;
 }
+
+.total {
+  position: fixed;
+  right: 80px;
+  bottom: 20px;
+}
+
+.premium{
+  position: fixed;
+  color:red;
+  bottom: 20px;
+  left: 30px;
+
+}
