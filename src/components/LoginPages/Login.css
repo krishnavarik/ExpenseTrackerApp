@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  top: 90px;
+  left: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blueviolet;
+  width: 300px;
+  height: 350px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+h1 {
+  text-align: center;
+}
+
+.form1 div {
+  display: flex;
+  flex-direction: column;
+}
+label {
+  font-size: 18px;
+}
+.login{
+  width: 100%;
+}
+.form div {
+  margin: 10px;
+}
+.btn1 {
+  width: 80%;
+  margin-left: 18px;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: mediumslateblue;
+}
+
+.btn1 a {
+  text-decoration-line: none;
+  color: black;
+}
+.btn1:hover {
+  background-color: tan;
+}
+
+.btn2 {
+  padding: 5px;
+  background-color: mediumslateblue;
+}
+.btn2:hover {
+  background-color: rgb(160, 12, 152);
+  color: aqua;
+}

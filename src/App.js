@@ -1,10 +1,10 @@
 import { Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
-import SignUp from "./components/pages/SignUp";
-import Login from "./components/pages/Login";
-import Form from "./components/pages/Form";
-import EnterEmail from "./components/pages/EnterEmail";
+import SignUp from "./components/LoginPages/SignUp";
+import Login from "./components/LoginPages/Login";
+import Form from "./components/LoginPages/Form";
+import EnterEmail from "./components/LoginPages/EnterEmail";
 
 import React, { useContext } from "react";
 import { AuthContext } from "./components/Store/auth-context";
