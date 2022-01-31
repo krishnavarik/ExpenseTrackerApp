@@ -9,6 +9,10 @@ function ExpenseItems() {
 
   const [expense, setExpense] = useState([]);
 
+  const [edit, setEdit] = useState(false);
+
+  const [editId, setEditId] = useState("");
+
   const priceHandler = (event) => {
     setPrice(event.target.value);
   };
@@ -29,43 +33,70 @@ function ExpenseItems() {
       title: title,
     };
 
-    fetch(
-      "https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses.json",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          price: price,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
+    if (edit) {
+      fetch(
+        `https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses/${editId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            price: price,
+            description: description,
+            title: title,
+          }),
+          headers: { "Content-Type": "application/json" },
+        }
+      ).then((res) => {
         if (res.ok) {
-          alert("your information stored in Database");
-          return res.json();
+          alert("you edited successfully");
         } else {
           return res.json().then((data) => {
-            alert("failed to store data in database");
+            console.log(data.error);
           });
         }
-      })
-      .then((data) => {
-        setExpense([Expense, ...expense]);
       });
+    } else {
+      fetch(
+        "https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses.json",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            title: title,
+            description: description,
+            price: price,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.ok) {
+            alert("your information stored in Database");
+            return res.json();
+          } else {
+            return res.json().then((data) => {
+              alert("failed to store data in database");
+            });
+          }
+        })
+        .then((data) => {
+          setExpense([Expense, ...expense]);
+        });
+    }
 
-    // setTitle('')
-    // setPrice('')
-    // setDescription('')
+    setTitle('')
+    setPrice('')
+    setDescription('')
   };
 
   useEffect(() => {
     fetch(
-      "https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses.json",{
-        method:"GET"
+      "https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses.json",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     )
       .then((res) => {
@@ -123,17 +154,13 @@ function ExpenseItems() {
   };
 
   const editHandler = (id) => {
-    console.log(id.description);
+    setEdit(true);
+
+    setEditId(id);
+
     fetch(
       `https://expensetrackerapp-a816d-default-rtdb.firebaseio.com/expenses/${id}.json`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          title: title,
-          price: price,
-          description: description,
-        }),
-      }
+      { method: "GET" }
     )
       .then((res) => {
         if (res.ok) {
@@ -146,6 +173,9 @@ function ExpenseItems() {
       })
       .then((data) => {
         console.log(data);
+        setDescription(data.description);
+        setPrice(data.price);
+        setTitle(data.title);
       });
   };
 
