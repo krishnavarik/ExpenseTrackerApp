@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./ExpenseItems.css";
 
 import { expenseActions } from "../store/expenseReducer";
+import Premium from "../LoginPages/Premium";
 
 function ExpenseItems() {
   const TotalExpense = useSelector((state) => state.expense.totalexpense);
@@ -20,6 +21,8 @@ function ExpenseItems() {
   const [editId, setEditId] = useState("");
 
   const [premium, setPremium] = useState(false);
+  const [premiumBtn, setPremiumBtn] = useState(false);
+  const [premiumfeatures, setPremiumfeatures] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -104,8 +107,10 @@ function ExpenseItems() {
   useEffect(() => {
     if (TotalExpense >= 10000) {
       setPremium(true);
+      setPremiumBtn(true);
     } else {
       setPremium(false);
+      setPremiumBtn(false);
     }
   }, [TotalExpense]);
 
@@ -147,8 +152,9 @@ function ExpenseItems() {
       });
   }, [dispatch]);
 
-  const deleteHandler = (id) => {
+  const deleteHandler = (id, price) => {
     console.log(id);
+    dispatch(expenseActions.afterDeleteExpense(price));
 
     const updated = expense.filter((item) => {
       return item.id !== id;
@@ -200,6 +206,10 @@ function ExpenseItems() {
         setPrice(data.price);
         setTitle(data.title);
       });
+  };
+
+  const activatePremiumHandler = () => {
+    setPremiumfeatures(true);
   };
 
   return (
@@ -256,7 +266,7 @@ function ExpenseItems() {
                 <div>
                   <button
                     onClick={() => {
-                      deleteHandler(item.id);
+                      deleteHandler(item.id, item.price);
                     }}
                   >
                     delete
@@ -274,10 +284,16 @@ function ExpenseItems() {
           })}
         </ul>
       </section>
-      {premium && <button className="premium">Active Premium</button>}
       <div className="total">
         <h2>Total Expense: ${TotalExpense} </h2>
       </div>
+      {/* {premium && <button className="premium">Active Premium</button>} */}
+      {premiumBtn && premium && (
+        <button type="button" onClick={activatePremiumHandler}>
+          Activate Premium
+        </button>
+      )}
+      {premiumfeatures && <Premium />}
     </div>
   );
 }

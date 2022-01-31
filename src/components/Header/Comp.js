@@ -12,7 +12,7 @@ function Comp() {
           <Link to="/completenow">Complete Now</Link>
         </p>
       </header>
-      <div>
+      <div className="ExpenseItems">
        <ExpenseItems></ExpenseItems>
       </div>
     </div>

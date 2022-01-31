@@ -5,6 +5,9 @@
   align-items: center;
   border-bottom: 1px solid brown;
 }
+.ExpenseItems{
+  height: 200vh;
+}
 
 .head p {
   font-size: 15px;
