@@ -149,6 +149,7 @@ function ExpenseItems() {
         }
         setExpense(storedItems);
         dispatch(expenseActions.expense(storedItems));
+      
       });
   }, [dispatch]);
 

@@ -1,4 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
@@ -10,11 +9,6 @@ const Login = () => {
   const [confirmPass, setConfirmPass] = useState("");
 
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-
-  const idToken = useSelector((state) => state.idToken);
-  console.log(idToken);
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -62,9 +56,6 @@ const Login = () => {
         .then((data) => {
           // console.log(data);
           console.log(data.idToken);
-
-          dispatch({ type: "idtoken", token: data.idToken });
-          console.log(data.idToken)
 
           navigate("/complete");
         })
